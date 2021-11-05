@@ -1,0 +1,14 @@
+<form *ngIf="categories" [formGroup]="form">
+  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" formControlName="category">
+    <option value='default' selected>Selecciona una categoría</option>
+    <option *ngFor="let category of categories.drinks" value="{{category.strCategory}}">{{ category.strCategory }}</option>
+  </select>
+  <div class="input-group flex-nowrap">
+    <input type="text" class="form-control" placeholder="Ingrediente" aria-label="ingrediente"
+      aria-describedby="addon-wrapping" formControlName="ingredient">
+  </div>
+  <div class="input-group flex-nowrap mt-3">
+    <input type="submit" class="form-control" value="Buscar recetas" (click)="onChangeMode()">
+  </div>
+  <span class="badge rounded-pill bg-danger mt-3 w-100" *ngIf="formError">Todos los campos son obligatorios</span>
+</form>

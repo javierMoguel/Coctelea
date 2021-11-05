@@ -1,8 +1,8 @@
-export interface GetRecetasModel {
-  drinks: GetReceta[];
+export class GetRecetasModel {
+  drinks: DrinkModel[];
 }
 
-export interface GetReceta {
+export interface DrinkModel {
   strDrink: string;
   strDrinkThumb: string;
   idDrink: string;

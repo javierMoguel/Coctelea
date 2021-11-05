@@ -1,5 +1,17 @@
 <app-header [tab]='tab'></app-header>
 
 <ion-content [fullscreen]="true">
-
+  <div class="container mt-3">
+    <app-form></app-form>
+    <div *ngIf="showList" >
+      <app-cards *ngFor="let drink of recipesService.getRecipes.drinks" [drink]="drink"></app-cards>
+      
+      <!-- <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+        <ion-infinite-scroll-content
+          loadingSpinner="bubbles"
+          loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll> -->
+    </div>
+  </div>
 </ion-content>

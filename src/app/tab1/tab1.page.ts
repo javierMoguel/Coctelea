@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CategoriesModel } from '../models/categories.model';
 import { RecipesService } from '../services/recipes.service';
 
 @Component({
@@ -6,18 +7,20 @@ import { RecipesService } from '../services/recipes.service';
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss']
 })
-export class Tab1Page {
+export class Tab1Page implements OnInit{
 
-  public tab: string = 'Buscador';
+  public tab = 'Buscador';
+  public showList = false;
 
   constructor(
-    private recipesService: RecipesService
+    public recipesService: RecipesService
   ) {}
 
   ngOnInit(): void {
-    this.recipesService.getCategories().subscribe( res => {
-      console.log(res);
-    })
+    this.recipesService.getRecipesSubject?.subscribe( res => {
+      this.showList = true;
+    });
   }
+  
 
 }

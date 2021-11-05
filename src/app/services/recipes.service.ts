@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { APIurl } from './defines';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { apiUrl } from './defines';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
 import { CategoriesModel } from '../models/categories.model';
@@ -11,42 +11,38 @@ import { GetRecetasModel } from '../models/recipes.model';
 })
 export class RecipesService {
 
-  public getRecipes: GetRecetasModel; 
+  public getRecipes: GetRecetasModel = new GetRecetasModel();
+  public getRecipesSubject: BehaviorSubject<GetRecetasModel> = new BehaviorSubject(this.getRecipes);
+  public getRecipes$: Observable<GetRecetasModel> = this.getRecipesSubject.asObservable();
 
   constructor(
     private http: HttpClient
   ) { }
 
-  public getRecetas( ingrediente: string, categoria: string): Observable<any> {
-    const url: string = APIurl.cocktailDb.replace('{type}', APIurl.filter);
-    url.concat(APIurl.queryParamsGet.replace('{ingrediente}', ingrediente).replace('{categoria}', categoria ));
+  public getCategories(): Observable<CategoriesModel> {
+    let url: string = apiUrl.cocktailDb.replace('{type}', apiUrl.list);
+    url = url.concat(apiUrl.queryParamsList);
     const headers: HttpHeaders = new HttpHeaders();
-    const options: Object = {
-      headers: headers
+    const options: { [key: string]: HttpHeaders } = {
+      headers
+    };
+    return this.http.get(url, options).pipe( map ( (res: CategoriesModel) => res), catchError( error => throwError(error)));
+  }
+  public getRecetas( ingrediente: string, categoria: string): Observable<any> {
+    let url: string = apiUrl.cocktailDb.replace('{type}', apiUrl.filter);
+    url = url.concat(apiUrl.queryParamsGet.replace('{ingrediente}', ingrediente).replace('{categoria}', categoria ));
+    const headers: HttpHeaders = new HttpHeaders();
+    const options: { [key: string]: HttpHeaders } = {
+      headers
     };
 
     return this.http.get(url, options).pipe( map ( (res: any) => {
       this.logicRecipes( res );
-    }), catchError( error => {
-      return throwError(error);
-    }))
+    }), catchError( error => throwError(error)));
   }
 
   private logicRecipes( recetas ) {
     this.getRecipes = recetas;
-  }
-
-  public getCategories(): Observable<CategoriesModel> {
-    const url: string = APIurl.cocktailDb.replace('{type}', APIurl.list);
-    url.concat(APIurl.queryParamsList);
-    const headers: HttpHeaders = new HttpHeaders();
-    const options: Object = {
-      headers: headers
-    };
-    return this.http.get(url, options).pipe( map ( (res: CategoriesModel) => {
-      return res;
-    }), catchError( error => {
-      return throwError(error);
-    }))
+    this.getRecipesSubject.next(this.getRecipes);
   }
 }
