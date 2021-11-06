@@ -1,11 +1,13 @@
 <form *ngIf="categories" [formGroup]="form">
-  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" formControlName="category">
-    <option value='default' selected>Selecciona una categoría</option>
-    <option *ngFor="let category of categories.drinks" value="{{category.strCategory}}">{{ category.strCategory }}</option>
-  </select>
+  <ion-item>
+    <ion-label>Selecciona una categoría</ion-label>
+    <ion-select value="" okText="Seleccionar" cancelText="Cancelar" formControlName="category">
+      <ion-select-option *ngFor="let category of categories.drinks"
+      value="{{category.strCategory}}">{{ category.strCategory }}</ion-select-option>
+    </ion-select>
+  </ion-item>
   <div class="input-group flex-nowrap">
-    <input type="text" class="form-control" placeholder="Ingrediente" aria-label="ingrediente"
-      aria-describedby="addon-wrapping" formControlName="ingredient">
+      <ion-input placeholder="Ingrediente" formControlName="ingredient"></ion-input>
   </div>
   <div class="input-group flex-nowrap mt-3">
     <input type="submit" class="form-control" value="Buscar recetas" (click)="onChangeMode()">

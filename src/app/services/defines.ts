@@ -7,3 +7,5 @@ export const apiUrl: { [key: string]: string }= {
     list: 'list',
     search: 'search'
 };
+
+export const alcoholicStr = 'Alcoholic';

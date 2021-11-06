@@ -55,3 +55,8 @@ export interface SingleDrinkModel {
   strCreativeCommonsConfirmed: string;
   dateModified: string;
 }
+
+export interface InstruccionesModal {
+  instruccion: string;
+  idioma: string;
+}

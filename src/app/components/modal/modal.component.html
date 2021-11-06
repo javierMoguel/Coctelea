@@ -2,11 +2,43 @@
   <ion-toolbar>
     <ion-title>{{headerTitle}}</ion-title>
     <ion-buttons slot="end">
-      <ion-button onclick="dismissModal()">Close</ion-button>
+      <ion-button (click)="dismissModal()">Close</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <img [src]="image" alt="">
+  <div class="container">
+    <img [src]="image" alt="">
+    <ion-list>
+      <ion-item>
+        <ion-icon slot="end" [name]="iconAlcoholic"></ion-icon>
+        <ion-label>¿Contiene alcohol?</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Tipo de vaso</ion-label>
+        <ion-label slot="end">{{ vaso }}</ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Ingredientes</ion-label>
+      </ion-list-header>
+      <ion-item *ngFor="let ingrediente of ingredientes">
+        <ion-label>{{ ingrediente }}</ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-item>
+      <ion-label>Idioma</ion-label>
+      <ion-select value="Idioma" interface="action-sheet" ngModel="instruccion" (ionChange)="setLang($event)">
+        <ion-select-option *ngFor="let instruccion of instrucciones; let i = index" [value]="instruccion.idioma">
+        {{ instruccion.idioma }} </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-text>
+        <p>{{ instruccion }}</p>
+      </ion-text>
+    </ion-item>
+  </div>
 </ion-content>
