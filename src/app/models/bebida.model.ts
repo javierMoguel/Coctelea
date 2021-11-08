@@ -56,7 +56,7 @@ export interface SingleDrinkModel {
   dateModified: string;
 }
 
-export interface InstruccionesModal {
+export interface InstruccionesModel {
   instruccion: string;
   idioma: string;
 }

@@ -1,6 +1,6 @@
 <ion-header translucent>
   <ion-toolbar>
-    <ion-title>{{headerTitle}}</ion-title>
+    <ion-title>{{bebida.strDrink}}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="dismissModal()">Close</ion-button>
     </ion-buttons>
@@ -9,7 +9,12 @@
 
 <ion-content>
   <div class="container">
-    <img [src]="image" alt="">
+    <ion-fab vertical="top" horizontal="end" slot="fixed" *ngIf="!isFavPage">
+      <ion-fab-button (click)="checkFav()">
+        <ion-icon [name]="iconFav"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+    <img [src]="bebida.strDrinkThumb" alt="">
     <ion-list>
       <ion-item>
         <ion-icon slot="end" [name]="iconAlcoholic"></ion-icon>
@@ -17,16 +22,21 @@
       </ion-item>
       <ion-item>
         <ion-label>Tipo de vaso</ion-label>
-        <ion-label slot="end">{{ vaso }}</ion-label>
+        <ion-label slot="end">{{ bebida.strGlass }}</ion-label>
       </ion-item>
     </ion-list>
     <ion-list>
       <ion-list-header>
-        <ion-label>Ingredientes</ion-label>
+        <ion-item>
+          <ion-label>Ingredienes</ion-label>
+          <ion-label id="addToCart" *ngIf="isFavPage">Add to cart</ion-label>
+        </ion-item>
       </ion-list-header>
-      <ion-item *ngFor="let ingrediente of ingredientes">
-        <ion-label>{{ ingrediente }}</ion-label>
-      </ion-item>
+      <div *ngIf="!isFavPage else favPage">
+        <ion-item *ngFor="let ingrediente of ingredientes">
+          <ion-label>{{ ingrediente }}</ion-label>
+        </ion-item>
+      </div>
     </ion-list>
     <ion-item>
       <ion-label>Idioma</ion-label>
@@ -42,3 +52,10 @@
     </ion-item>
   </div>
 </ion-content>
+
+<ng-template #favPage>
+  <ion-item *ngFor="let ingrediente of ingredientes">
+    <ion-label>{{ingrediente}}</ion-label>
+    <ion-checkbox slot="end"></ion-checkbox>
+  </ion-item>
+</ng-template>
