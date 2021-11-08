@@ -34,7 +34,7 @@
       </ion-list-header>
       <div *ngIf="!isFavPage else favPage">
         <ion-item *ngFor="let ingrediente of ingredientes">
-          <ion-label>{{ ingrediente }}</ion-label>
+          <ion-label>{{ ingrediente.name }}</ion-label>
         </ion-item>
       </div>
     </ion-list>
@@ -55,7 +55,9 @@
 
 <ng-template #favPage>
   <ion-item *ngFor="let ingrediente of ingredientes">
-    <ion-label>{{ingrediente}}</ion-label>
-    <ion-checkbox slot="end"></ion-checkbox>
+    <ion-label>{{ingrediente.name}}</ion-label>
+    <ion-checkbox slot="end" (click)="checkIngredientes(ingrediente.name)" [value]="ingrediente.name"
+    [checked]="ingrediente.stored">
+  </ion-checkbox>
   </ion-item>
 </ng-template>

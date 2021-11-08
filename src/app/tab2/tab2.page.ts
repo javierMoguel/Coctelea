@@ -15,6 +15,13 @@ export class Tab2Page implements OnInit{
   ) {}
 
   ngOnInit(): void {
+  }
+
+  ionViewWillEnter() {
+    this.getFavoritos();
+  }
+
+  private getFavoritos() {
     this.favoritosService.getAll().then( res => {
       this.favoritos = res;
     });

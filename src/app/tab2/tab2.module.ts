@@ -8,6 +8,7 @@ import { Tab2Page } from './tab2.page';
 import { Tab2PageRoutingModule } from './tab2-routing.module';
 import { HeaderComponent } from '../components/header/header.component';
 import { CardsComponent } from '../components/cards/cards.component';
+import { NoFavsComponent } from './no-favs/no-favs.component';
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { CardsComponent } from '../components/cards/cards.component';
     FormsModule,
     Tab2PageRoutingModule
   ],
-  declarations: [Tab2Page, HeaderComponent, CardsComponent]
+  declarations: [Tab2Page, HeaderComponent, CardsComponent, NoFavsComponent]
 })
 export class Tab2PageModule {}

@@ -1,7 +1,12 @@
 <app-header [tab]='tab'></app-header>
 
-<ion-content [fullscreen]="true">
-
+<ion-content [fullscreen]="true" >
+<div *ngIf="favoritos.length > 0 else noFavs">
   <app-cards *ngFor="let drink of favoritos" [drink]="drink" [isFavPage]="true"></app-cards>
+</div>
 
 </ion-content>
+
+<ng-template #noFavs>
+  <app-no-favs></app-no-favs>
+</ng-template>

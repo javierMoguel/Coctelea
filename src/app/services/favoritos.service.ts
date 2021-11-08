@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
-import { single } from 'rxjs/operators';
 import { SingleDrinkModel } from '../models/bebida.model';
 
 @Injectable({

@@ -4,6 +4,8 @@ import { ModalController } from '@ionic/angular';
 import { InstruccionesModel, SingleDrinkModel } from '../../models/bebida.model';
 import ISO6391 from 'iso-639-1-plus';
 import { FavoritosService } from '../../services/favoritos.service';
+import { IngredientsService } from 'src/app/services/ingredients.service';
+import { IngredientesModel } from 'src/app/models/ingredientes.model';
 
 @Component({
   selector: 'app-modal',
@@ -19,20 +21,27 @@ export class ModalComponent implements OnInit {
   public instruccion: string;
   public iconFav: string;
   public instrucciones: Array<InstruccionesModel>;
-  public ingredientes: Array<string>;
+  public ingredientes: Array<IngredientesModel>;
+  public storedIngredientes: Array<string>;
   private isFav: boolean;
 
   constructor(
     public modalController: ModalController,
-    private favoritosService: FavoritosService
+    private favoritosService: FavoritosService,
+    private ingredientesService: IngredientsService
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.isAlcoholic();
-    this.ingredientes = this.setIngredients();
     this.instrucciones = this.setInstrucciones();
     this.instruccion = this.instrucciones[0].instruccion;
     this.checkIconFav();
+    if ( this.isFavPage ){
+      await this.ingredientesService.getIngredientes().then( res => {
+        this.storedIngredientes = res;
+      });
+    }
+    this.ingredientes = this.setIngredients();
   }
 
   public dismissModal() {
@@ -60,6 +69,10 @@ export class ModalComponent implements OnInit {
     this.isFav = !this.isFav;
   }
 
+  public checkIngredientes( ingrediente: string ) {
+    this.ingredientesService.checkIngrediente(ingrediente);
+  }
+
   private isAlcoholic(): void {
     this.iconAlcoholic = this.bebida.strAlcoholic === alcoholicStr ? 'checkmark-circle-outline' : 'close-circle-outline';
   }
@@ -71,14 +84,26 @@ export class ModalComponent implements OnInit {
     });
   }
 
-  private setIngredients(): Array<string> {
+  private setIngredients(): Array<IngredientesModel> {
     const ingredientes = new Array();
     for (let i = 1; i < 16; i++) {
       if (this.bebida[`strIngredient${i}`]) {
-        ingredientes.push(`${this.bebida[`strMeasure${i}`]} - ${this.bebida[`strIngredient${i}`]}`);
+        ingredientes.push({
+          name: `${this.bebida[`strMeasure${i}`]} - ${this.bebida[`strIngredient${i}`]}`,
+          stored: this.setCheckedIngredients(`${this.bebida[`strIngredient${i}`]}`)
+        });
       }
     }
     return ingredientes;
+  }
+
+  private setCheckedIngredients( ingrediente: string): boolean {
+    if (this.isFavPage ){
+      return this.storedIngredientes.indexOf(ingrediente) !== -1
+      ? true : false;
+    } else {
+      return false;
+    }
   }
 
   private setInstrucciones(): Array<InstruccionesModel> {
